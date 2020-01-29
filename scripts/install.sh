@@ -52,9 +52,29 @@ P_RETVAL=$?
 && unzip -o packer_${PACKER_VERSION}_linux_amd64.zip -d /usr/local/bin \
 && rm packer_${PACKER_VERSION}_linux_amd64.zip
 
+# OC cli and kubectl
+OC="3.9.0"
+KUBECTL="1.17.0"
+
+wget https://github.com/openshift/origin/releases/download/v$OC/openshift-origin-client-tools-v$OC-191fece-linux-64bit.tar.gz
+tar -xvf *.tar.gz
+cd openshift-origin-client-tools*
+mv oc /usr/local/bin/
+cd ..
+
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v$KUBECTL/bin/linux/amd64/kubectl
+chmod +x kubectl
+mv kubectl /usr/local/bin/
+
+rm -rf openshift*
+rm -rf kubectl
+rm -rf *.tar.gz
+
+
 # Allow PasswordAuthentication 
 
 sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/" /etc/ssh/sshd_config
+
 
 ###########################################
 ################# JENKINS #################
